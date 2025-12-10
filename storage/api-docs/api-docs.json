@@ -48,18 +48,12 @@
                     }
                 },
                 "responses": {
-                    "200": {
+                    "201": {
                         "description": "Successful",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Event Succesfully added"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/EventResponse"
                                 }
                             }
                         }
@@ -69,13 +63,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Unauthenticated"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/Error"
                                 }
                             }
                         }
@@ -85,23 +73,17 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Forbidden"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/Error"
                                 }
                             }
                         }
                     },
                     "422": {
-                        "description": "Validation error",
+                        "description": "Unprocessable Entity",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Error"
+                                    "$ref": "#/components/schemas/Invalid"
                                 }
                             }
                         }
@@ -376,6 +358,64 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "description": "User unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -528,10 +568,47 @@
     "components": {
         "schemas": {
             "Error": {
+                "description": "Error response schema",
                 "properties": {
                     "message": {
                         "type": "string",
-                        "example": "The given data was invalid."
+                        "example": "Error"
+                    }
+                },
+                "type": "object"
+            },
+            "Invalid": {
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Unprocessable Entity"
+                    },
+                    "errors": {
+                        "type": "object",
+                        "example": {
+                            "attribute": [
+                                "Validation error"
+                            ]
+                        },
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "EventResponse": {
+                "description": "Event response schema",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Udhauli Chasok Parva"
+                    },
+                    "location": {
+                        "type": "string",
+                        "example": "Dharan"
                     }
                 },
                 "type": "object"
