@@ -9,43 +9,6 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    /**
-     * @OA\Info(
-     *     title="My Internship API",
-     *     version="1.0.0",
-     *     description="API documentation for internship project"
-     * )
-     *
-     * @OA\Server(
-     *     url="/api",
-     *     description="API Base URL"
-     * )
-     *  @OA\Get(
-     *     path="/users",
-     *     summary="List all users",
-     *     tags={"Users"},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Success"
-     *     )
-     * )
-     * @OA\Post(
-     *     path="/users",
-     *     summary="Create User",
-     *     tags={"Users"},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"name","email","password"},
-     *             @OA\Property(property="name", type="string", example="Ram"),
-     *             @OA\Property(property="email", type="string", format="email", example="ram@example.com"),
-     *             @OA\Property(property="password", type="string", format="password", example="password123")
-     *         )
-     *     ),
-     *     @OA\Response(response=201, description="User created successfully"),
-     *     @OA\Response(response=422, description="Validation error")
-     * )
-     */
     public function index()
     {
 
@@ -78,5 +41,60 @@ class UserController extends Controller
                 ],
                 200
             );
+    }
+    public function show($id)
+    {
+        $user = User::find($id);
+        return response()->json([
+            'success' => true,
+            'message' => 'User fetched successfully',
+            'user' => $user
+        ], 200);
+    }
+    public function update(Request $request, $id)
+    {
+        $user = User::find($id);
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        if ($request->has('password')) {
+            $user->password = Hash::make($request->input('password'));
+        }
+        $user->update();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User updated successfully',
+            'user' => $user
+        ], 200);
+    }
+    public function updatePartial(Request $request, $id)
+    {
+        $user = User::find($id);
+        if ($request->has('name')) {
+            $user->name = $request->input('name');
+        }
+        if ($request->has('email')) {
+            $user->email = $request->input('email');
+        }
+        if ($request->has('password')) {
+            $user->password = Hash::make($request->input('password'));
+        }
+        $user->update();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User partially updated successfully',
+            'user' => $user
+        ], 200);
+    }
+    public function destroy($id)
+    {
+        $user = User::find($id);
+        $user->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User deleted successfully'
+        ], 200);
     }
 }
