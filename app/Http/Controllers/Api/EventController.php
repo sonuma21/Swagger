@@ -35,16 +35,28 @@ class EventController extends Controller
         ]);
     }
 
-
     public function show($event)
     {
-        $event = Event::findOrFail($event);
+        $event = Event::find($event);
+
+        if (!$event) {
+            return response()->json([
+                'message' => 'Event not found'
+            ], 404);
+        }
+
         return new EventResource($event);
     }
-
     public function update(StoreEvent $request, $event)
     {
-        $event = Event::findOrFail($event);
+        $event = Event::find($event);
+
+        if (!$event) {
+            return response()->json([
+                'message' => 'Event not found'
+            ], 404);
+        }
+
         $event->update($request->validated());
 
         return new EventResource($event);
@@ -52,9 +64,14 @@ class EventController extends Controller
 
     public function destroy($event)
     {
-        $event = Event::findOrFail($event);
-        $event->delete();
+        $event = Event::find($event);
 
-        return response()->json(null, 204);
+        if (!$event) {
+            return response()->json([
+                'message' => 'Event not found'
+            ], 404);
+        }
+        $event->delete();
+        return response()->noContent();
     }
 }

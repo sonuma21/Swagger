@@ -15,6 +15,12 @@ class StoreEvent extends FormRequest
     }
     public function rules(): array
     {
+        if ($this->method() === 'PATCH') {
+            return [
+                'name'     => 'sometimes|required|string|min:1',
+                'location' => 'sometimes|required|string|min:1',
+            ];
+        }
         return [
             'name'     => 'required|string|min:1',     // min:1 blocks "" and "   "
             'location' => 'required|string|min:1',

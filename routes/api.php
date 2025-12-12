@@ -24,5 +24,6 @@ Route::prefix('v1/events')->controller(EventController::class)->group(function (
     Route::get('/', 'index');
     Route::get('/{event}', 'show');
     Route::put('/{event}', 'update');
+    Route::patch('/{event}', 'update');
     Route::delete('/{event}', 'destroy');
 });
