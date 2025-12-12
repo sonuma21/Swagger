@@ -20,14 +20,5 @@ class StoreEvent extends FormRequest
             'location' => 'required|string|min:1',
         ];
     }
-    public function messages()
-    {
-        return [
-            'name.required'     => 'Event name is required.',
-            'name.string'       => 'Event name must be a string.',
-            'location.string'   => 'Location must be a string.',
-            'location.required' => 'Location is required.',
 
-        ];
-    }
 }

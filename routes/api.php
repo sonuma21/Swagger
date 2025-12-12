@@ -21,4 +21,8 @@ Route::prefix('v1/users')->controller(UserController::class)->group(function () 
 
 Route::prefix('v1/events')->controller(EventController::class)->group(function () {
     Route::post('/', 'store');
+    Route::get('/', 'index');
+    Route::get('/{event}', 'show');
+    Route::put('/{event}', 'update');
+    Route::delete('/{event}', 'destroy');
 });

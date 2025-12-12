@@ -9,11 +9,6 @@ namespace Docs\components\schemas;
  */
 class Error
 {
-    /**
-     *     @OA\Property(
-     *        type="string",
-     *        example="Error"
-     *     )
-     */
+    /** @OA\Property(example="string") */
     private string $message;
 }

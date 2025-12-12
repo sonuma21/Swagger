@@ -5,13 +5,11 @@ namespace Docs\components\schemas;
 
 class Invalid{
 
-    /** @OA\Property(type="string", example = "Unprocessable Entity"); */
+    /** @OA\Property(example = "The attribute field is required."); */
     public string $message;
 
     /** @OA\Property(type="object",nullable=true,
-     * example={
-     * "attribute": {"Validation error"},
-     * }
+     * example={"attribute": {"The attribute field is required."},}
      * )
      * */
     public ?object $errors = null;
