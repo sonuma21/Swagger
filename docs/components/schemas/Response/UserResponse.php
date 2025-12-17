@@ -16,6 +16,9 @@ class UserResponse
     /** @OA\Property(example = "lora37@example.com") */
     public string $email;
 
-    /** @OA\Property(example="2026-12-15T07:09:01.000000Z") */
+    /** @OA\Property(example="def502002dec6437fd3e90af64484c9e32...") */
+    public string $refreshToken;
+
+    /** @OA\Property(example="120") */
     public string $expiresIn;
 }

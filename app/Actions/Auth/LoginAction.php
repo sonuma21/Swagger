@@ -6,33 +6,37 @@ namespace App\Actions\Auth;
 
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class LoginAction
 {
-    public function execute(LoginRequest $request): JsonResponse
+    public function execute(LoginRequest $request)
     {
         $user = User::where('email', $request->email)->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
-            return response()->json([
-                'message' => 'Invalid email or password',
-            ], 401);
+            return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        // $user = Auth::user();
-        //   echo '<pre>';
-        // print_r($user);die;
+        $request = Request::create('/oauth/token', 'POST', [
+            'grant_type' => 'password',
+            'client_id' => config('passport.password_client_id'),
+            'client_secret' => config('passport.password_client_secret'),
+            'username' => $user->email,
+            'password' => $request->password,
+            'scope' => '*',
+        ]);
 
-        $tokenResult = $user->createToken('PersonalAccessToken');
+        $response = app()->handle($request);
+        $data = json_decode($response->getContent(), true);
 
         return response()->json([
-            'accessToken' => $tokenResult->accessToken,
+            'accessToken' => $data['access_token'],
             'name' => $user->name,
             'email' => $user->email,
-            'expiresIn' => $tokenResult->token->expires_at,
-
-        ], 200);
+            'refreshToken' => $data['refresh_token'],
+            'expiresIn' => $data['expires_in'],
+        ]);
     }
 }

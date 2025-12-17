@@ -1,16 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::prefix('v1/auth')->controller(AuthController::class)->group(function (): void {
+    Route::post('/login', 'login');
+    Route::delete('/logout', 'logout')->middleware('auth:api');
+});
 
-
-Route::prefix('v1/users')->controller(UserController::class)->group(function () {
+Route::prefix('v1/users')->controller(UserController::class)->group(function (): void {
     Route::get('/', 'index');
     Route::post('/', 'store');
     Route::get('/{id}', 'show');
@@ -19,7 +21,7 @@ Route::prefix('v1/users')->controller(UserController::class)->group(function () 
     Route::delete('/{id}', 'destroy');
 });
 
-Route::prefix('v1/events')->controller(EventController::class)->group(function () {
+Route::prefix('v1/events')->controller(EventController::class)->group(function (): void {
     Route::post('/', 'store');
     Route::get('/', 'index');
     Route::get('/{event}', 'show');
