@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Auth;
 
+use App\Data\User\LoginData;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LoginRequest extends FormRequest
@@ -27,5 +28,13 @@ class LoginRequest extends FormRequest
             'email' => 'required|email',
             'password' => 'required|string',
         ];
+    }
+
+    public function toData(): LoginData
+    {
+        return new LoginData(
+            email: $this->input('email'),
+            password: $this->input('password'),
+        );
     }
 }
