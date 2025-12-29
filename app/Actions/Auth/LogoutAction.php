@@ -5,13 +5,18 @@ declare(strict_types=1);
 namespace App\Actions\Auth;
 
 use Illuminate\Http\Request;
+use Laravel\Passport\RefreshToken;
 
 class LogoutAction
 {
+
     public function execute(Request $request)
     {
+        $accessTokenId = $request->user()->token()->id;
+
         $request->user()->token()->revoke();
 
-        return response()->json(null, 204);
+        RefreshToken::where('access_token_id', $accessTokenId)
+            ->update(['revoked' => true]);
     }
 }

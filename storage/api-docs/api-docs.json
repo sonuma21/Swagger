@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Swaggerr API",
+        "title": "HR Management API",
         "description": "Laravel API documentation for Internship project",
         "version": "1.0.0"
     },
@@ -16,7 +16,219 @@
         }
     ],
     "paths": {
+        "/v1/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User login",
+                "operationId": "ceb6dc96bc0ec504de825ef7c59ef3e3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "lora37@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User logged in successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Invalid"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/auth/logout": {
+            "delete": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User logout",
+                "operationId": "5d39187f66262002b59b8a60e61ac53a",
+                "responses": {
+                    "204": {
+                        "description": "User logged out successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NoContent"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/v1/auth/token/refresh": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Generates new access token using refresh token",
+                "operationId": "acbf185f2ab94938de1562973087aaa5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "refresh_token"
+                                ],
+                                "properties": {
+                                    "refresh_token": {
+                                        "type": "string",
+                                        "example": "def50200e46f1c845159eed71a8ab9f36c6e26e14dad97eba0bfa46b9e3152513b2f3b7cf5d4ad862639a3c5af7e6394624097d1aa496312998f66ae5ea90ab7b2aa15d5abf6f19c543d6b7a93861f47f42ce0b76c8bed766eca127ef8c8ea1806b26f1838f26d3bf0fa31eab996d62ff78070098880731f498c1ca93f0163998fa516eb3d712bbc164271b02a13d142f9922ebb0abc26205ecff078f0768f2ea78a205b345019f1c4d8cb1c3fde6798cd5a061171ba8b4506f41ff9c8a5da62aedbaf006b6c8d1f9089236e690fb1efb969a77576007dcbe357db7e10fd0cb1067daa3eaffd8ba0ff37d1c58f9c67d051b0a8ebfa758f78b9979ec67dfc5da51548ce5b1b0b8e507f2b9eee521d700e54a9e8f661d58807ee27006434663344c2b55eb97ce874620b145e882db74a59d6535fdcbe1a5a6fc957b50455e6c622c5c4007c1e427752d183a9986632f0aac70efcdd8989c1db46c1c3d4909816cd807a7f05a"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "New access token generated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RefreshTokenResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Invalid"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/v1/events": {
+            "get": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Retrieve a list of events with pagination",
+                "operationId": "3c481b43c55256c2a33c32869197b784",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Fetch paginated list of events",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListEventResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "Events"
@@ -84,6 +296,293 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Invalid"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/v1/events/{event}": {
+            "get": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Retrieve event details by ID",
+                "operationId": "d01ca78151e3749243e2ef9f7a106f19",
+                "parameters": [
+                    {
+                        "name": "event",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 99
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EventResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Updating an existing event",
+                "operationId": "42208538c1b44896accfc642a4da1b97",
+                "parameters": [
+                    {
+                        "name": "event",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 99
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Udhauli Chasok Parva"
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "example": "Dharan"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Event updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EventResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFound"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Invalid"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Delete an event by ID",
+                "operationId": "5e6175d535b65d7c1131b741e2ba2b54",
+                "parameters": [
+                    {
+                        "name": "event",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Event deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NoContent"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Partially updating an existing event",
+                "operationId": "c9be3798fd63dce7e24c3eb92c33a1cb",
+                "parameters": [
+                    {
+                        "name": "event",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 99
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Udhauli Chasok Parva"
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "example": "Dharan"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Event updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EventResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFound"
                                 }
                             }
                         }
@@ -206,7 +705,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             }
         },
         "/v1/users/{id}": {
@@ -572,7 +1076,7 @@
                 "properties": {
                     "message": {
                         "type": "string",
-                        "example": "Error"
+                        "example": "string"
                     }
                 },
                 "type": "object"
@@ -581,13 +1085,13 @@
                 "properties": {
                     "message": {
                         "type": "string",
-                        "example": "Unprocessable Entity"
+                        "example": "The attribute field is required.(and 1 more error)"
                     },
                     "errors": {
                         "type": "object",
                         "example": {
                             "attribute": [
-                                "Validation error"
+                                "The attribute field is required."
                             ]
                         },
                         "nullable": true
@@ -595,12 +1099,59 @@
                 },
                 "type": "object"
             },
+            "NoContent": {},
+            "NotFound": {
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "EventPaginationLinks": {
+                "description": "Event pagination links",
+                "properties": {
+                    "total": {
+                        "type": "integer",
+                        "example": 55
+                    },
+                    "per_page": {
+                        "type": "integer",
+                        "example": 8
+                    },
+                    "current_page": {
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "last_page": {
+                        "type": "integer",
+                        "example": 7
+                    },
+                    "previous": {
+                        "type": "string",
+                        "example": "http://127.0.0.1:8000/api/v1/events?page=4"
+                    },
+                    "next": {
+                        "type": "string",
+                        "example": "http://127.0.0.1:8000/api/v1/events?page=6"
+                    }
+                },
+                "type": "object"
+            },
             "EventResponse": {
-                "description": "Event response schema",
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/Event"
+                    }
+                },
+                "type": "object"
+            },
+            "Event": {
                 "properties": {
                     "id": {
                         "type": "integer",
-                        "example": 1
+                        "example": 12
                     },
                     "name": {
                         "type": "string",
@@ -612,10 +1163,78 @@
                     }
                 },
                 "type": "object"
+            },
+            "ListEventResponse": {
+                "description": "Paginated list of events",
+                "properties": {
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Event"
+                        }
+                    },
+                    "pagination": {
+                        "$ref": "#/components/schemas/EventPaginationLinks"
+                    }
+                },
+                "type": "object"
+            },
+            "RefreshTokenResponse": {
+                "properties": {
+                    "accessToken": {
+                        "type": "string",
+                        "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo4MDgwL3YxL2F1dGgvbG9naW4iLCJpYXQiOjE2ODgwMjI0MDAsImV4cCI6MTY4ODAyNjAwMCwibmJmIjoxNjg4MDIyNDAwLCJqdGkiOiJlZDI1ZjhiY2JlIn0.DXK3vY5VnXo5b1bF8XQz1kUOeXhQz5jz3F4Z5k6b7c"
+                    },
+                    "refreshToken": {
+                        "type": "string",
+                        "example": "def50200e46f1c845159eed71a8ab9f36c6e26e14dad97eba0bfa46b9e3152513b2f3b7cf5d4ad862639a3c5af7e6394624097d1aa496312998f66ae5ea90ab7b2aa15d5abf6f19c543d6b7a93861f47f42ce0b76c8bed766eca127ef8c8ea1806b26f1838f26d3bf0fa31eab996d62ff78070098880731f498c1ca93f0163998fa516eb3d712bbc164271b02a13d142f9922ebb0abc26205ecff078f0768f2ea78a205b345019f1c4d8cb1c3fde6798cd5a061171ba8b4506f41ff9c8a5da62aedbaf00"
+                    },
+                    "expireIn": {
+                        "type": "integer",
+                        "example": 7200
+                    }
+                },
+                "type": "object"
+            },
+            "UserResponse": {
+                "properties": {
+                    "accessToken": {
+                        "type": "string",
+                        "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9..."
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Asha Spinka V"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "lora37@example.com"
+                    },
+                    "refreshToken": {
+                        "type": "string",
+                        "example": "def502002dec6437fd3e90af64484c9e32..."
+                    },
+                    "expiresIn": {
+                        "type": "string",
+                        "example": "120"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearer": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
             }
         }
     },
     "tags": [
+        {
+            "name": "Auth",
+            "description": "Auth"
+        },
         {
             "name": "Events",
             "description": "Events"
