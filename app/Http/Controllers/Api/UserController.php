@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -14,14 +17,7 @@ class UserController extends Controller
 
         $users = User::all();
 
-        return response()->json([
-            [
-                'success' => true,
-                'message' => 'User fetched successfully',
-                'user' => $users
-            ],
-            200
-        ]);
+        return UserResource::collection($users);
     }
 
     public function store(Request $request)
@@ -37,22 +33,29 @@ class UserController extends Controller
                 [
                     'success' => true,
                     'message' => 'User created successfully',
-                    'user' => $user
+                    'user' => $user,
                 ],
-                200
+                201
             );
     }
+
     public function show($id)
     {
         $user = User::find($id);
+
         return response()->json([
             'success' => true,
             'message' => 'User fetched successfully',
-            'user' => $user
+            'user' => $user,
         ], 200);
     }
+
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|string|email',
+        ]);
         $user = User::find($id);
         $user->name = $request->input('name');
         $user->email = $request->input('email');
@@ -64,9 +67,10 @@ class UserController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'User updated successfully',
-            'user' => $user
+            'user' => $user,
         ], 200);
     }
+
     public function updatePartial(Request $request, $id)
     {
         $user = User::find($id);
@@ -84,9 +88,10 @@ class UserController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'User partially updated successfully',
-            'user' => $user
+            'user' => $user,
         ], 200);
     }
+
     public function destroy($id)
     {
         $user = User::find($id);
@@ -94,7 +99,7 @@ class UserController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'User deleted successfully'
+            'message' => 'User deleted successfully',
         ], 200);
     }
 }
