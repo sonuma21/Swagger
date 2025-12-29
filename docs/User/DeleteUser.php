@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docs\User;
 
 class DeleteUser
@@ -15,6 +17,7 @@ class DeleteUser
      *         in="path",
      *         required=true,
      *         description="ID of the user to delete",
+     *
      *         @OA\Schema(
      *             type="integer",
      *             format="int64",
@@ -25,10 +28,13 @@ class DeleteUser
      *     @OA\Response(
      *         response=200,
      *         description="User deleted successfully",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="message", type="string", example="User deleted")
      *         )
      *     ),
+     *
      *     @OA\Response(response=401, description="Unauthorized", @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthorized"))),
      *     @OA\Response(response=403, description="Forbidden",    @OA\JsonContent(@OA\Property(property="message", type="string", example="Forbidden"))),
      *     @OA\Response(response=404, description="Not Found",     @OA\JsonContent(@OA\Property(property="message", type="string", example="User not found"))),

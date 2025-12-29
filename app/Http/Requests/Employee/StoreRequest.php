@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Employee;
 
 use App\Data\Employee\EmployeeData;
@@ -30,14 +32,15 @@ class StoreRequest extends FormRequest
             'location' => 'required|string|max:255',
         ];
     }
-     public function toDto(): EmployeeData
+
+    public function toDto(): EmployeeData
     {
         return new EmployeeData(
             firstName: $this->first_name,
-            lastName:  $this->last_name,
-            email:     $this->email,
-            phone:     $this->phone_number,
-            location:  $this->location,
+            lastName: $this->last_name,
+            email: $this->email,
+            phone: $this->phone_number,
+            location: $this->location,
         );
     }
 }

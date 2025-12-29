@@ -1,5 +1,9 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Docs\components\schemas\Pagination;
+
 /**
  * @OA\Schema(
  *     schema="EventPaginationLinks",
@@ -26,6 +30,4 @@ class EventPaginationLinks
 
     /** @OA\Property(example="http://127.0.0.1:8000/api/v1/events?page=6") */
     private string $next;
-
-
 }

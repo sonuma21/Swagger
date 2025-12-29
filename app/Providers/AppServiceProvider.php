@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
         Passport::loadKeysFrom(storage_path('app/private/oauth'));
 
         Passport::tokensExpireIn(
-            Carbon::now()->addSeconds(120)
+            Carbon::now()->addHours(2)
         );
 
         Passport::refreshTokensExpireIn(

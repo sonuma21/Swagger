@@ -13,10 +13,10 @@ final class StoreAction
     {
         return Employee::create([
             'first_name' => $dto->firstName,
-            'last_name'  => $dto->lastName,
-            'email'      => $dto->email,
+            'last_name' => $dto->lastName,
+            'email' => $dto->email,
             'phone_number' => $dto->phone,
-            'location'   => $dto->location,
+            'location' => $dto->location,
         ]);
     }
 }

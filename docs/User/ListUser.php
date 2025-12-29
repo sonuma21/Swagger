@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace docs\User;
 
 class ListUser
@@ -9,14 +11,12 @@ class ListUser
      *     path="/v1/users",
      *     summary="List all users",
      *     tags={"Users"},
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Success"
      *     )
      * )
      */
-    function listUsers(): void
-    {
-        //
-    }
+    public function listUsers(): void {}
 }
