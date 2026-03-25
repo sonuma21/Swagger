@@ -11,10 +11,6 @@ class CreateUser
      *     path="/v1/users",
      *     tags={"Users"},
      *     summary="Create a new user",
-     *     security={
-     *          {"bearer":{}
-     *              },
-     * },
      *
      *     @OA\RequestBody(
      *         required=true,
@@ -27,7 +23,11 @@ class CreateUser
      *
      *                 @OA\Property(property="name", type="string", example="John Doe"),
      *                 @OA\Property(property="email", type="string", format="email", example="john@example.com"),
-     *                 @OA\Property(property="password", type="string", format="password", example="secret123")
+     *                 @OA\Property(property="password", type="string", format="password", example="secret123"),
+     *                 @OA\Property(property="phone", type="string", example="9876756456"),
+     *                 @OA\Property(property="designation", type="string", example="Software Engineer"),
+     *                 @OA\Property(property="department", type="string", example="Engineering"),
+     *                 @OA\Property(property="status", type="string", example="active"),
      *             )
      *         )
      *     ),

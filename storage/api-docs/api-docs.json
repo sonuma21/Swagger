@@ -595,11 +595,182 @@
                 "tags": [
                     "Users"
                 ],
-                "summary": "List all users",
-                "operationId": "df8a8bfc54ae8652517a5d443d27f996",
+                "summary": "Get paginated list of users",
+                "operationId": "94bbe099208eeec6be79d81ce3e06f19",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of users per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search by name, email, designation or department",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "John"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Filter users by status",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "active",
+                                "inactive"
+                            ],
+                            "example": "active"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Field to sort by",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "name"
+                            ],
+                            "example": "name"
+                        }
+                    },
+                    {
+                        "name": "order",
+                        "in": "query",
+                        "description": "Sort direction (ascending or descending)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ],
+                            "example": "asc"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Success"
+                        "description": "Users retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "John Doe"
+                                                    },
+                                                    "email": {
+                                                        "type": "string",
+                                                        "example": "john@example.com"
+                                                    },
+                                                    "phone": {
+                                                        "type": "string",
+                                                        "example": "9876756456"
+                                                    },
+                                                    "designation": {
+                                                        "type": "string",
+                                                        "example": "Software Engineer"
+                                                    },
+                                                    "department": {
+                                                        "type": "string",
+                                                        "example": "Engineering"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "active"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 6
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 3
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Forbidden"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -633,6 +804,22 @@
                                         "type": "string",
                                         "format": "password",
                                         "example": "secret123"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "9876756456"
+                                    },
+                                    "designation": {
+                                        "type": "string",
+                                        "example": "Software Engineer"
+                                    },
+                                    "department": {
+                                        "type": "string",
+                                        "example": "Engineering"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "active"
                                     }
                                 },
                                 "type": "object"
@@ -705,12 +892,7 @@
                             }
                         }
                     }
-                },
-                "security": [
-                    {
-                        "bearer": []
-                    }
-                ]
+                }
             }
         },
         "/v1/users/{id}": {
@@ -1064,6 +1246,20 @@
                                 }
                             }
                         }
+                    }
+                }
+            }
+        },
+        "/v1/users/list": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "List all users",
+                "operationId": "da9c585d34e44867b992ee31a9d1a6f9",
+                "responses": {
+                    "200": {
+                        "description": "Success"
                     }
                 }
             }
