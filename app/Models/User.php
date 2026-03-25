@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enum\UserStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -25,8 +26,15 @@ class User extends Authenticatable implements OAuthenticatable
         'name',
         'email',
         'password',
+        'phone',
+        'designation',
+        'department',
+        'status',
     ];
 
+    protected $casts = [
+        'status' => UserStatus::class,
+    ];
     /**
      * The attributes that should be hidden for serialization.
      *

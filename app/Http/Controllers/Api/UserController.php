@@ -4,102 +4,53 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
+use App\Actions\User\ListUserAction;
+use App\Actions\User\StoreUserAction;
+use App\Actions\User\UserPaginationAction;
+use App\Enum\HttpStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\IndexUserRequest;
+use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Resources\UserResource;
+use App\Http\Responses\ApiResponse;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index()
+    public function __construct(protected ApiResponse $response) {}
+
+    public function index(IndexUserRequest $request, UserPaginationAction $action)
     {
+        $paginator = $action->execute($request->toData());
 
-        $users = User::all();
-
-        return UserResource::collection($users);
+        return $this->response->paginated($paginator, UserResource::class);
     }
 
-    public function store(Request $request)
+    public function getByIds(Request $request)
     {
-        $user = new User();
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->password = Hash::make($request->input('password'));
-        $user->save();
-
-        return response()
-            ->json(
-                [
-                    'success' => true,
-                    'message' => 'User created successfully',
-                    'user' => $user,
-                ],
-                201
-            );
+        $ids = explode(',', $request->query('ids', ''));
+        $users = User::whereIn('id', $ids)->get();
+        return response()->json(['data' => $users]);
     }
 
-    public function show($id)
+    public function list(ListUserAction $action)
     {
-        $user = User::find($id);
+        $users = $action->execute();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'User fetched successfully',
-            'user' => $user,
-        ], 200);
+        return $this->response->success(UserResource::collection($users));
     }
 
-    public function update(Request $request, $id)
+    public function store(StoreUserRequest $request, StoreUserAction $action)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|string|email',
-        ]);
-        $user = User::find($id);
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        if ($request->has('password')) {
-            $user->password = Hash::make($request->input('password'));
-        }
-        $user->update();
+       $user = $action->execute($request->toData());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'User updated successfully',
-            'user' => $user,
-        ], 200);
+       return $this->response->success(UserResource::make($user), HttpStatus::CREATED);
     }
 
-    public function updatePartial(Request $request, $id)
+    public function show(User $user)
     {
-        $user = User::find($id);
-        if ($request->has('name')) {
-            $user->name = $request->input('name');
-        }
-        if ($request->has('email')) {
-            $user->email = $request->input('email');
-        }
-        if ($request->has('password')) {
-            $user->password = Hash::make($request->input('password'));
-        }
-        $user->update();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'User partially updated successfully',
-            'user' => $user,
-        ], 200);
+        return $this->response->success(UserResource::make($user));
     }
 
-    public function destroy($id)
-    {
-        $user = User::find($id);
-        $user->delete();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'User deleted successfully',
-        ], 200);
-    }
 }

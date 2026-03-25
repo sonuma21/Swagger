@@ -14,28 +14,15 @@ Route::prefix('v1/auth')->controller(AuthController::class)->group(function (): 
     Route::post('/token/refresh', 'refreshToken');
 });
 
-Route::prefix('v1/users')
-    ->middleware(['auth:api'])
-    ->controller(UserController::class)
-    ->group(function (): void {
-        Route::get('/', 'index')
-            ->middleware('permission:view-users');
-        Route::post('/', 'store')
-            ->middleware('permission:create-user');
-        Route::get('/{id}', 'show')
-            ->middleware('permission:view-user');
-        Route::put('/{id}', 'update')
-            ->middleware('permission:update-user');
-        Route::patch('/{id}', 'updatePartial')
-            ->middleware('permission:update-user');
-        Route::delete('/{id}', 'destroy')
-            ->middleware('permission:delete-user');
+Route::prefix('v1/users')->controller(UserController::class)->group(function (): void {
+        Route::get('/list', 'list');
+        Route::get('/', 'index');
+        Route::get('/favorites', 'getByIds');
+        Route::post('/', 'store');
+        Route::get('/{user}', 'show');
     });
 
-Route::prefix('v1/events')
-    ->middleware(['auth:api'])
-    ->controller(EventController::class)
-    ->group(function (): void {
+Route::prefix('v1/events')->middleware(['auth:api'])->controller(EventController::class)->group(function (): void {
         Route::post('/', 'store')
             ->middleware('permission:create-event');
         Route::get('/', 'index')
