@@ -17,6 +17,7 @@ class User extends Authenticatable implements OAuthenticatable
     use HasApiTokens, HasFactory, HasRoles, Notifiable;
 
     protected $guard_name = 'api';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -35,6 +36,7 @@ class User extends Authenticatable implements OAuthenticatable
     protected $casts = [
         'status' => UserStatus::class,
     ];
+
     /**
      * The attributes that should be hidden for serialization.
      *

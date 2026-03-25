@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Docs\Components\Schemas\Response;
 
 /** @OA\Schema(schema="RefreshTokenResponse") */
-
 class RefreshTokenResponse
 {
     /** @OA\Property(example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo4MDgwL3YxL2F1dGgvbG9naW4iLCJpYXQiOjE2ODgwMjI0MDAsImV4cCI6MTY4ODAyNjAwMCwibmJmIjoxNjg4MDIyNDAwLCJqdGkiOiJlZDI1ZjhiY2JlIn0.DXK3vY5VnXo5b1bF8XQz1kUOeXhQz5jz3F4Z5k6b7c") */

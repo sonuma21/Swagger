@@ -9,8 +9,7 @@ use Laravel\Passport\RefreshToken;
 
 class LogoutAction
 {
-
-    public function execute(Request $request)
+    public function execute(Request $request): void
     {
         $accessTokenId = $request->user()->token()->id;
 

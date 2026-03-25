@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\User;
 
 use App\Data\User\StoreUserData;
@@ -8,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class StoreUserAction
 {
-    public function execute(StoreUserData $data) : User
+    public function execute(StoreUserData $data): User
     {
         return User::create([
             'name' => $data->name,

@@ -13,7 +13,6 @@ use App\Http\Requests\Auth\RefreshtokenRequest;
 use App\Http\Resources\LoginResource;
 use App\Http\Resources\RefreshTokenResource;
 use App\Http\Responses\ApiResponse;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -28,6 +27,7 @@ class AuthController extends Controller
     public function login(LoginRequest $LoginRequest, LoginAction $loginAction)
     {
         $result = $loginAction->execute($LoginRequest->toData());
+
         return $this->response->success(LoginResource::make($result));
     }
 

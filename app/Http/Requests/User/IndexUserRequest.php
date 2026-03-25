@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\User;
 
 use App\Data\User\PaginationData;
-use App\Enum\UserStatus as UserStatus;
+use App\Enum\UserStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -17,10 +19,10 @@ class IndexUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'page'     => ['nullable', 'integer', 'min:1'],
+            'page' => ['nullable', 'integer', 'min:1'],
             'per_page' => ['nullable', 'integer', 'min:1', 'max:100'],
-            'search'   => ['nullable', 'string', 'max:100'],
-            'status'   => ['nullable', Rule::enum(UserStatus::class)],
+            'search' => ['nullable', 'string', 'max:100'],
+            'status' => ['nullable', Rule::enum(UserStatus::class)],
             'sort_by' => ['nullable', 'string', 'in:name'],
             'order' => ['required', 'string', 'in:asc,desc'],
         ];

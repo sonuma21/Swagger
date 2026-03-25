@@ -31,6 +31,7 @@ class UserController extends Controller
     {
         $ids = explode(',', $request->query('ids', ''));
         $users = User::whereIn('id', $ids)->get();
+
         return response()->json(['data' => $users]);
     }
 
@@ -43,14 +44,13 @@ class UserController extends Controller
 
     public function store(StoreUserRequest $request, StoreUserAction $action)
     {
-       $user = $action->execute($request->toData());
+        $user = $action->execute($request->toData());
 
-       return $this->response->success(UserResource::make($user), HttpStatus::CREATED);
+        return $this->response->success(UserResource::make($user), HttpStatus::CREATED);
     }
 
     public function show(User $user)
     {
         return $this->response->success(UserResource::make($user));
     }
-
 }

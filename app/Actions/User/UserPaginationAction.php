@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\User;
 
 use App\Data\User\PaginationData;
@@ -18,17 +20,17 @@ class UserPaginationAction
                 'phone',
                 'designation',
                 'department',
-                'status'
+                'status',
             ])
 
-            ->when($dto->search, function ($query) use ($dto) {
-                $query->where(function ($q) use ($dto) {
+            ->when($dto->search, function ($query) use ($dto): void {
+                $query->where(function ($q) use ($dto): void {
                     $q->where('name', 'like', "%{$dto->search}%")
                         ->orWhere('email', 'like', "%{$dto->search}%");
                 });
             })
 
-            ->when($dto->status !== null, function ($query) use ($dto) {
+            ->when($dto->status !== null, function ($query) use ($dto): void {
                 $query->where('status', $dto->status->value);
             })
 

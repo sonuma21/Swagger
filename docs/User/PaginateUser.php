@@ -44,30 +44,36 @@ class PaginateUser
      *          in="query",
      *          description="Filter users by status",
      *          required=false,
+     *
      *          @OA\Schema( type="string", enum={"active", "inactive"}, example="active")
      *     ),
+     *
      *       @OA\Parameter(
      *            name="sort",
      *            in="query",
      *            description="Field to sort by",
      *            required=false,
+     *
      *            @OA\Schema(
      *                type="string",
      *                enum={"name"},
      *                example="name"
      *            )
      *      ),
+     *
      *         @OA\Parameter(
      *            name="order",
      *            in="query",
      *            description="Sort direction (ascending or descending)",
      *            required=true,
+     *
      *            @OA\Schema(
      *                type="string",
      *                enum={"asc", "desc"},
      *                example="asc"
      *     )
      *    ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Users retrieved successfully",
@@ -89,11 +95,9 @@ class PaginateUser
      *                     @OA\Property(property="status",      type="string",  example="active")
      *                 )
      *             ),
-     *
      *             @OA\Property(
      *                 property="meta",
      *                 type="object",
-     *
      *                 @OA\Property(property="total",        type="integer", example=6),
      *                 @OA\Property(property="per_page",     type="integer", example=10),
      *                 @OA\Property(property="current_page", type="integer", example=1),

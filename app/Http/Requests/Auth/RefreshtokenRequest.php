@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Auth;
 
 use App\Data\User\RefreshData;
@@ -7,7 +9,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class RefreshtokenRequest extends FormRequest
 {
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -20,7 +21,7 @@ class RefreshtokenRequest extends FormRequest
         ];
     }
 
-    public function toData() : RefreshData
+    public function toData(): RefreshData
     {
         return new RefreshData(
             refreshToken: $this->input('refresh_token'),

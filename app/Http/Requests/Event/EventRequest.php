@@ -32,13 +32,11 @@ class EventRequest extends FormRequest
         ];
     }
 
-    public function toData() : EventData
+    public function toData(): EventData
     {
         return new EventData(
             name: $this->input('name'),
             location: $this->input('location'),
         );
     }
-
-
 }

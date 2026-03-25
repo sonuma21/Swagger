@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\User;
 
 use App\Data\User\StoreUserData;
@@ -18,13 +20,13 @@ class StoreUserRequest extends FormRequest
     {
         return [
 
-            'name'        => ['required', 'string', 'max:25'],
-            'email'       => ['required', 'string', 'email', 'unique:users,email'],
-            'password'    => ['required', 'string', 'min:8'],
-            'phone'       => ['nullable', 'string', 'digits:10'],
+            'name' => ['required', 'string', 'max:25'],
+            'email' => ['required', 'string', 'email', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:8'],
+            'phone' => ['nullable', 'string', 'digits:10'],
             'designation' => ['nullable', 'string', 'max:20'],
-            'department'  => ['nullable', 'string', 'max:20'],
-            'status'      => ['required', Rule::enum(UserStatus::class)],
+            'department' => ['nullable', 'string', 'max:20'],
+            'status' => ['required', Rule::enum(UserStatus::class)],
 
         ];
     }
