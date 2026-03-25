@@ -8,7 +8,7 @@ class ListUser
 {
     /**
      *  @OA\Get(
-     *     path="/v1/users",
+     *     path="/v1/users/list",
      *     summary="List all users",
      *     tags={"Users"},
      *
