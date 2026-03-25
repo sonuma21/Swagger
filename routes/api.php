@@ -17,7 +17,7 @@ Route::prefix('v1/auth')->controller(AuthController::class)->group(function (): 
 Route::prefix('v1/users')->controller(UserController::class)->group(function (): void {
     Route::get('/list', 'list');
     Route::get('/', 'index');
-    Route::get('/favorites', 'listfavUsers');
+    Route::post('/favorites', 'listfavUsers');
     Route::post('/', 'store');
     Route::get('/{user}', 'show');
 });

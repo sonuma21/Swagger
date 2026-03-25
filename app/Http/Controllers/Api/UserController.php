@@ -32,7 +32,7 @@ class UserController extends Controller
     {
         $users = $action->execute($request->toData());
 
-        return $this->response->success(UserResource::collection($users));
+        return $this->response->success(['data' => UserResource::collection($users)]);
     }
 
     public function list(ListUserAction $action)

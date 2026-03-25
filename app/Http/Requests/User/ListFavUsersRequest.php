@@ -17,14 +17,15 @@ class ListFavUsersRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'ids' => 'required|string',
+            'ids' => 'required|array',
+            'ids.*' => 'exists:users,id',
         ];
     }
 
     public function toData(): FavUsersData
     {
         return new FavUsersData(
-            ids: explode(',', $this->query('ids', '')),
+            ids: $this->validated('ids'),
         );
     }
 }
