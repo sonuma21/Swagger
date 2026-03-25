@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\User;
 
-use App\Data\User\LoginData;
+use App\Data\User\FavUsersData;
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class ListFavUsersRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -17,16 +17,14 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email',
-            'password' => 'required|string',
+            'ids' => 'required|string',
         ];
     }
 
-    public function toData(): LoginData
+    public function toData(): FavUsersData
     {
-        return new LoginData(
-            email: $this->input('email'),
-            password: $this->input('password'),
+        return new FavUsersData(
+            ids: explode(',', $this->query('ids', '')),
         );
     }
 }

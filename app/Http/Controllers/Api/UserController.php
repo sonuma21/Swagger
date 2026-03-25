@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
+use App\Actions\User\ListFavUsersAction;
 use App\Actions\User\ListUserAction;
 use App\Actions\User\StoreUserAction;
 use App\Actions\User\UserPaginationAction;
 use App\Enum\HttpStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\IndexUserRequest;
+use App\Http\Requests\User\ListFavUsersRequest;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -27,12 +28,11 @@ class UserController extends Controller
         return $this->response->paginated($paginator, UserResource::class);
     }
 
-    public function getByIds(Request $request)
+    public function listfavUsers(ListFavUsersRequest $request, ListFavUsersAction $action)
     {
-        $ids = explode(',', $request->query('ids', ''));
-        $users = User::whereIn('id', $ids)->get();
+        $users = $action->execute($request->toData());
 
-        return response()->json(['data' => $users]);
+        return $this->response->success(UserResource::collection($users));
     }
 
     public function list(ListUserAction $action)
