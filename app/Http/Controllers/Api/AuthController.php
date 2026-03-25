@@ -28,19 +28,20 @@ class AuthController extends Controller
     public function login(LoginRequest $LoginRequest, LoginAction $loginAction)
     {
         $result = $loginAction->execute($LoginRequest->toData());
-        return $this->response->success(LoginResource::make($result),'Login successful');
+        return $this->response->success(LoginResource::make($result));
     }
 
-    public function logout(Request $request, LogoutAction $logoutAction): JsonResponse
+    public function logout(Request $request, LogoutAction $action)
     {
-        $logoutAction->execute($request);
-        return response()->json(null, 204);
+        $action->execute($request);
+
+        return $this->response->noContent();
     }
 
-    public function refreshToken(RefreshtokenRequest $Refreshrequest, RefreshTokenAction $refreshTokenAction)
+    public function refreshToken(RefreshtokenRequest $request, RefreshTokenAction $action)
     {
-        return RefreshTokenResource::make(
-            $refreshTokenAction->execute($Refreshrequest->toData())
-        );
+        $result = $action->execute($request->toData());
+
+        return $this->response->success(RefreshTokenResource::make($result));
     }
 }
